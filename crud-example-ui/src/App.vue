@@ -59,7 +59,7 @@
         },
 
         components: {
-            'form-pessoa' : FormPessoa
+            FormPessoa
         }
     };
 
