@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const Home = () => import('./views/Home.vue')
+const Pessoas = () => import('./views/Pessoas.vue')
 const About = () => import('./views/About.vue')
 const FormPessoa = () => import('./components/FormPessoa.vue')
 
@@ -12,8 +12,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'pessoas',
+      component: Pessoas
     },
     {
       path: '/about',
