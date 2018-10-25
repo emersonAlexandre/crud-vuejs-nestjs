@@ -7,6 +7,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   SwaggerModule.setup('/api/docs', app, yamljs.load('./swagger.yml'));
   app.setGlobalPrefix('api');
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

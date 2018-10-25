@@ -53,6 +53,7 @@
 
 <script>
 
+import axios from 'axios'
 
 export default {
   data () {
@@ -69,59 +70,18 @@ export default {
         { text: 'Birthday', value: 'birthday' },
         { text: 'Action', value: 'actions' }
       ],
-      desserts: [
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        },
-        {
-          name: 'Emerson',
-          age: '23',
-          birthday: '07/05/1996'
-        }
-      ]
+      desserts: this.getPessoas()
+    }
+  },
+
+  methods: {
+    getPessoas () {
+      axios.get('http://localhost:3001/api/pessoas').then((response) => {
+        console.log(response.data[0].name)
+        return response.data
+      })
     }
   }
+
 }
 </script>
