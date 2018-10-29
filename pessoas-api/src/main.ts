@@ -4,9 +4,9 @@ import { SwaggerModule } from '@nestjs/swagger';
 import * as yamljs from 'yamljs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   SwaggerModule.setup('/api/docs', app, yamljs.load('./swagger.yml'));
   app.setGlobalPrefix('api');
-  await app.listen(3001);
+  await app.listen(3000);
 }
 bootstrap();

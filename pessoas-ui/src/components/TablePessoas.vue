@@ -1,4 +1,5 @@
 <template>
+    <div>
     <v-card>
         <v-card-title>
             <v-layout align-center justify-space-between row wrap>
@@ -38,7 +39,7 @@
                     </v-icon>
                     <v-icon
                             small
-                            @click="false"
+                            @click="open = true"
                     >
                         delete
                     </v-icon>
@@ -49,16 +50,24 @@
             </v-alert>
         </v-data-table>
     </v-card>
+    <confirm-dialog :opened="open" />
+    </div>
 </template>
 
 <script>
 
 import axios from 'axios'
+import ConfirmDialog from './ConfirmDialog'
 
 export default {
+  name: 'TablePessoas',
+  components: {
+    'confirm-dialog': ConfirmDialog
+  },
   data () {
     return {
       search: '',
+      open: false,
       headers: [
         {
           text: 'Name',
@@ -70,17 +79,19 @@ export default {
         { text: 'Birthday', value: 'birthday' },
         { text: 'Action', value: 'actions' }
       ],
-      desserts: this.getPessoas()
+      desserts: []
     }
   },
 
-  methods: {
-    getPessoas () {
-      axios.get('http://localhost:3001/api/pessoas').then((response) => {
-        console.log(response.data[0].name)
-        return response.data
+  mounted () {
+    var that = this
+    axios.get('http://localhost:3000/api/pessoas').then((response) => {
+      that.desserts = response.data
+      console.log('Data: ', response.data)
+    })
+      .catch((error) => {
+        console.log('Error: ', error)
       })
-    }
   }
 
 }

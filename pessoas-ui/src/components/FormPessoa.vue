@@ -1,42 +1,23 @@
 <template>
   <form>
     <v-text-field
-      v-validate="'required|max:10'"
+      v-validate="'required'"
       v-model="name"
-      :counter="10"
       :error-messages="errors.collect('name')"
       label="Name"
       data-vv-name="name"
       required
     ></v-text-field>
+    <date-picker @change="changedDate"/>
     <v-text-field
-      v-validate="'required|email'"
-      v-model="email"
-      :error-messages="errors.collect('email')"
-      label="E-mail"
-      data-vv-name="email"
-      required
+            v-validate="'required'"
+            v-model="age"
+            :error-messages="errors.collect('age')"
+            label="Age"
+            data-vv-name="age"
+            required
+            type="number"
     ></v-text-field>
-    <v-select
-      v-validate="'required'"
-      :items="items"
-      v-model="select"
-      :error-messages="errors.collect('select')"
-      label="Select"
-      data-vv-name="select"
-      required
-    ></v-select>
-    <v-checkbox
-      v-validate="'required'"
-      v-model="checkbox"
-      :error-messages="errors.collect('checkbox')"
-      value="1"
-      label="Option"
-      data-vv-name="checkbox"
-      type="checkbox"
-      required
-    ></v-checkbox>
-
     <v-btn @click="submit">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
   </form>
@@ -45,35 +26,29 @@
 <script>
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
+import DatePicker from './DatePicker'
+import axios from 'axios'
 Vue.use(VeeValidate)
+
 export default {
+  name: 'FormPessoa',
+  components: {
+    DatePicker
+  },
   $_veeValidate: {
     validator: 'new'
   },
   data: () => ({
     name: '',
-    email: '',
-    select: null,
-    items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4'
-    ],
-    checkbox: null,
+    age: '',
+    birthday: '',
     dictionary: {
-      attributes: {
-        email: 'E-mail Address'
-        // custom attributes
-      },
       custom: {
         name: {
-          required: () => 'Name can not be empty',
-          max: 'The name field may not be greater than 10 characters'
-          // custom messages
+          required: () => 'Name can not be empty'
         },
-        select: {
-          required: 'Select field is required'
+        age: {
+          required: () => 'Age can not be empty'
         }
       }
     }
@@ -82,14 +57,23 @@ export default {
     this.$validator.localize('en', this.dictionary)
   },
   methods: {
+    changedDate (val) {
+      this.birthday = val
+    },
     submit () {
-      this.$validator.validateAll()
+      this.$validator.validateAll().then((res) => {
+        if (res) {
+          axios({ method: 'POST', 'url': 'http://127.0.0.1:3000/api/pessoas', 'data': { name: this.name, age: this.age, birthday: this.birthday }, 'headers': { 'content-type': 'application/json' } }).then(result => {
+            this.$router.push({ name: 'pessoas', query: { redirect: '/pessoas' } })
+          }, error => {
+            console.error(error)
+          })
+        }
+      })
     },
     clear () {
       this.name = ''
-      this.email = ''
-      this.select = null
-      this.checkbox = null
+      this.age = null
       this.$validator.reset()
     }
   }
