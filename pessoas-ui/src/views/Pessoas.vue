@@ -3,7 +3,9 @@
 </template>
 
 <script>
+
 import TablePessoas from './../components/TablePessoas'
+
 export default {
   data () {
     return {
