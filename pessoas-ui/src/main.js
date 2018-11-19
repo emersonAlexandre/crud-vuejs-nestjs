@@ -6,11 +6,14 @@ import 'vuetify/dist/vuetify.min.css'
 import './assets/scss/app.scss'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Vuex from 'vuex'
+import { store } from './store/store'
 
-Vue.use(Vuetify, VueAxios, axios)
+Vue.use(Vuetify, VueAxios, axios, Vuex)
 
 Vue.config.productionTip = false
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

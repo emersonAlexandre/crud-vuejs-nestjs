@@ -50,7 +50,7 @@
             </v-alert>
         </v-data-table>
     </v-card>
-    <confirm-dialog :opened="open" />
+    <confirm-dialog :openned="open" :title="'Attention'" @cancel="open = false" @confirm="deletarPessoa"/>
     </div>
 </template>
 
@@ -58,7 +58,7 @@
 
 import axios from 'axios'
 import ConfirmDialog from './ConfirmDialog'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'TablePessoas',
   components: {
@@ -82,7 +82,15 @@ export default {
       desserts: []
     }
   },
-
+  methods: {
+    ...mapActions({
+      delete: 'deletePessoa'
+    }),
+    deletarPessoa () {
+      this.delete(this.$store.getters.currentPessoa)
+      this.open = false
+    }
+  },
   mounted () {
     var that = this
     axios.get('http://localhost:3000/api/pessoas').then((response) => {
