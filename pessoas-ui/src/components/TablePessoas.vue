@@ -22,7 +22,7 @@
         </v-card-title>
         <v-data-table
                 :headers="headers"
-                :items="desserts"
+                :items="pessoas"
                 :search="search"
         >
             <template slot="items" slot-scope="props">
@@ -56,9 +56,8 @@
 
 <script>
 
-import axios from 'axios'
 import ConfirmDialog from './ConfirmDialog'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'TablePessoas',
   components: {
@@ -84,22 +83,26 @@ export default {
   },
   methods: {
     ...mapActions({
-      delete: 'deletePessoa'
+      delete: 'deletePessoa',
+      getPessoas: 'getPessoas'
+    }),
+    ...mapGetters({
+      pessoas: 'pessoas',
+      currentPessoa: 'currentPessoa'
     }),
     deletarPessoa () {
-      this.delete(this.$store.getters.currentPessoa)
+      this.delete(this.currentPessoa)
       this.open = false
     }
   },
+
+  beforeMount () {
+    this.getPessoas()
+  },
+
   mounted () {
-    var that = this
-    axios.get('http://localhost:3000/api/pessoas').then((response) => {
-      that.desserts = response.data
-      console.log('Data: ', response.data)
-    })
-      .catch((error) => {
-        console.log('Error: ', error)
-      })
+    console.log(this.$store.getters.pessoas[0])
+    this.desserts = this.pessoas
   }
 
 }

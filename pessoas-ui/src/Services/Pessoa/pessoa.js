@@ -6,3 +6,7 @@ export const deletePessoa = (id) => {
   }
   return axios.delete('http://localhost:3000/api/pessoas', { params })
 }
+
+export const getPessoas = () => {
+  return axios.get('http://localhost:3000/api/pessoas')
+}
