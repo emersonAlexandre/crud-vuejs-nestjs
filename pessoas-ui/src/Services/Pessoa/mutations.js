@@ -19,8 +19,6 @@ export default {
   },
 
   changePessoas (state, pessoas) {
-    console.log('pessoas (Antes): ' + state.pessoas)
     state.pessoas = pessoas
-    console.log('pessoas (Depois): ' + state.pessoas)
   }
 }

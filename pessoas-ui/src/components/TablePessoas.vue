@@ -22,7 +22,7 @@
         </v-card-title>
         <v-data-table
                 :headers="headers"
-                :items="pessoas"
+                :items="desserts"
                 :search="search"
         >
             <template slot="items" slot-scope="props">
@@ -86,24 +86,23 @@ export default {
       delete: 'deletePessoa',
       getPessoas: 'getPessoas'
     }),
-    ...mapGetters({
-      pessoas: 'pessoas',
-      currentPessoa: 'currentPessoa'
-    }),
     deletarPessoa () {
       this.delete(this.currentPessoa)
       this.open = false
     }
   },
-
-  beforeMount () {
+  computed: {
+    ...mapGetters({
+      pessoas: 'pessoas',
+      currentPessoa: 'currentPessoa'
+    })
+  },
+  mounted () {
     this.getPessoas()
   },
-
-  mounted () {
-    console.log(this.$store.getters.pessoas[0])
+  created () {
+    console.log(this.pessoas)
     this.desserts = this.pessoas
   }
-
 }
 </script>
