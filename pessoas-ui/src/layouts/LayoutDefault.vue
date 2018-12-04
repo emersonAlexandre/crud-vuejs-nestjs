@@ -5,20 +5,20 @@
       fixed
       app>
       <v-list dense>
-        <v-list-tile @click=" false">
+        <v-list-tile @click="goTo('pessoas')">
           <v-list-tile-action>
             <v-icon>person</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <router-link to="/" class="v-a"> Pessoas </router-link>
+            <v-list-tile-title>Pessoas</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="false">
+        <v-list-tile @click="goTo('about')">
           <v-list-tile-action>
             <v-icon>contact_mail</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <router-link to="/about" class="v-a"> About </router-link>
+            <v-list-tile-title>About</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -47,6 +47,11 @@ export default {
   }),
   props: {
     source: String
+  },
+  methods: {
+    goTo (router) {
+      this.$router.push({ name: router })
+    }
   }
 }
 </script>

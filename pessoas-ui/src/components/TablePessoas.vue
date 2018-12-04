@@ -1,5 +1,6 @@
 <template>
     <div>
+    <alert :message='alerta.message' :success='alerta.success' :alert='alerta.open' @closeAlert="alterarAlert({ success: false, message: '', open: false })"/>
     <v-card>
         <v-card-title>
             <v-layout align-center justify-space-between row wrap>
@@ -16,13 +17,15 @@
                     ></v-text-field>
                 </v-flex>
                 <v-flex sm2>
-                    <v-btn style="float: right;" color="primary" dark class="mb-2" to="/cadastro">New Item</v-btn>
+                    <v-btn style="float: right;" color="primary" dark class="mb-2" @click="goTo({ name: 'pessoaNew' })">
+                        New People
+                    </v-btn>
                 </v-flex>
             </v-layout>
         </v-card-title>
         <v-data-table
                 :headers="headers"
-                :items="desserts"
+                :items="pessoas"
                 :search="search"
         >
             <template slot="items" slot-scope="props">
@@ -33,13 +36,13 @@
                     <v-icon
                             small
                             class="mr-2"
-                            @click="false"
+                            @click="editarPessoa(props.item)"
                     >
                         edit
                     </v-icon>
                     <v-icon
                             small
-                            @click="open = true"
+                            @click="abrirModal(props.item)"
                     >
                         delete
                     </v-icon>
@@ -50,7 +53,7 @@
             </v-alert>
         </v-data-table>
     </v-card>
-    <confirm-dialog :openned="open" :title="'Attention'" @cancel="open = false" @confirm="deletarPessoa"/>
+    <confirm-dialog :openned="open" :title="'Attention'" @cancel="fecharModal" @confirm="deletarPessoa"/>
     </div>
 </template>
 
@@ -58,9 +61,11 @@
 
 import ConfirmDialog from './ConfirmDialog'
 import { mapActions, mapGetters } from 'vuex'
+import Alert from './Alert'
 export default {
   name: 'TablePessoas',
   components: {
+    'alert': Alert,
     'confirm-dialog': ConfirmDialog
   },
   data () {
@@ -77,32 +82,57 @@ export default {
         { text: 'Age', value: 'age' },
         { text: 'Birthday', value: 'birthday' },
         { text: 'Action', value: 'actions' }
-      ],
-      desserts: []
+      ]
     }
   },
   methods: {
     ...mapActions({
       delete: 'deletePessoa',
-      getPessoas: 'getPessoas'
+      getPessoas: 'getPessoas',
+      setCurrentPessoa: 'setCurrentPessoa',
+      alterarAlert: 'alterarAlert'
     }),
     deletarPessoa () {
-      this.delete(this.currentPessoa)
+      this.delete(this.currentPessoa._id)
+        .then(res => {
+          if (res.data._id === this.currentPessoa._id) {
+            this.setCurrentPessoa({})
+            this.open = false
+            this.getPessoas()
+            this.alterarAlert({ success: true, message: 'Pessoa excluida com sucesso', open: true })
+          }
+        })
+    },
+    abrirModal (pessoa) {
+      this.setCurrentPessoa(pessoa)
+      this.open = true
+    },
+    fecharModal () {
+      this.setCurrentPessoa({})
       this.open = false
+    },
+    editarPessoa (pessoa) {
+      this.setCurrentPessoa(pessoa)
+      this.goTo({ name: 'pessoaEdit', params: { pessoa: this.currentPessoa } })
+    },
+    goTo (params) {
+      this.$router.push(params)
     }
   },
   computed: {
     ...mapGetters({
       pessoas: 'pessoas',
-      currentPessoa: 'currentPessoa'
+      currentPessoa: 'currentPessoa',
+      alerta: 'alerta'
     })
   },
   mounted () {
     this.getPessoas()
   },
   created () {
-    console.log(this.pessoas)
-    this.desserts = this.pessoas
+    if (this.currentPessoa) {
+      this.setCurrentPessoa({})
+    }
   }
 }
 </script>

@@ -12,8 +12,8 @@
     >
         <v-text-field
                 slot="activator"
-                v-model="birthday"
-                label="Bithday"
+                :value="birthday"
+                label="Birthday"
                 hint="DD/MM/YYYY format"
                 persistent-hint
                 prepend-icon="event"
@@ -32,11 +32,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  data: vm => ({
-    date: new Date().toISOString().substr(0, 10),
+  data: () => ({
+    date: null,
     menu: false,
-    birthday: vm.formatDate(new Date().toISOString().substr(0, 10))
+    birthday: null
   }),
   watch: {
     menu (val) {
@@ -63,6 +65,19 @@ export default {
       const [month, day, year] = date.split('/')
       return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     }
+  },
+  created () {
+    let pessoa = this.currentPessoa
+    if (!Object.keys(pessoa).length < 1) {
+      console.log('entrou')
+      this.date = new Date(pessoa.birthday).toISOString().substr(0, 10)
+      this.birthday = this.formatDate(this.date)
+    }
+  },
+  computed: {
+    ...mapGetters({
+      currentPessoa: 'currentPessoa'
+    })
   }
 }
 </script>

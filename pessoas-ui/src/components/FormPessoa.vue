@@ -8,7 +8,10 @@
       data-vv-name="name"
       required
     ></v-text-field>
-    <date-picker @change="changedDate"/>
+    <date-picker
+            @change="changedDate"
+            v-model="birthday"
+    ></date-picker>
     <v-text-field
             v-validate="'required'"
             v-model="age"
@@ -18,8 +21,8 @@
             required
             type="number"
     ></v-text-field>
-    <v-btn @click="submit">submit</v-btn>
-    <v-btn @click="clear">clear</v-btn>
+    <v-btn @click="voltar">Voltar</v-btn>
+    <v-btn @click="submit">Submit</v-btn>
   </form>
 </template>
 
@@ -27,7 +30,8 @@
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 import DatePicker from './DatePicker'
-import axios from 'axios'
+import { mapActions, mapGetters } from 'vuex'
+
 Vue.use(VeeValidate)
 
 export default {
@@ -41,6 +45,7 @@ export default {
   data: () => ({
     name: '',
     age: '',
+    message: '',
     birthday: '',
     dictionary: {
       custom: {
@@ -49,6 +54,9 @@ export default {
         },
         age: {
           required: () => 'Age can not be empty'
+        },
+        birthday: {
+          required: () => 'Birthday can not be empty'
         }
       }
     }
@@ -57,24 +65,51 @@ export default {
     this.$validator.localize('en', this.dictionary)
   },
   methods: {
+    ...mapActions({
+      alterarAlert: 'alterarAlert',
+      createOrEditPessoa: 'createOrEditPessoa'
+    }),
     changedDate (val) {
       this.birthday = val
     },
     submit () {
       this.$validator.validateAll().then((res) => {
         if (res) {
-          axios({ method: 'POST', 'url': 'http://127.0.0.1:3000/api/pessoas', 'data': { name: this.name, age: this.age, birthday: this.birthday }, 'headers': { 'content-type': 'application/json' } }).then(result => {
-            this.$router.push({ name: 'pessoas', query: { redirect: '/pessoas' } })
-          }, error => {
-            console.error(error)
-          })
+          this.createOrEditPessoa(this.verifyCreateOrEdit())
+            .then(result => {
+              this.$router.push({ name: 'pessoas' })
+              this.alterarAlert({ success: false, message: this.message, open: true })
+            }, error => {
+              console.error(error)
+              this.alterarAlert({ success: false, message: this.message + error, open: true })
+            })
         }
       })
     },
-    clear () {
-      this.name = ''
-      this.age = null
-      this.$validator.reset()
+    verifyCreateOrEdit () {
+      let pessoa = this.currentPessoa
+      if (!Object.keys(pessoa).length < 1 && pessoa._id) {
+        this.message = 'Pessoa alterada com sucesso'
+        return { _id: pessoa._id, name: this.name, age: this.age, birthday: this.birthday }
+      } else {
+        this.message = 'Pessoa cadastrada com sucesso'
+        return { name: this.name, age: this.age, birthday: this.birthday }
+      }
+    },
+    voltar () {
+      this.$router.push({ name: 'pessoas' })
+    }
+  },
+  computed: {
+    ...mapGetters({
+      currentPessoa: 'currentPessoa'
+    })
+  },
+  created () {
+    let pessoa = this.currentPessoa
+    if (!Object.keys(pessoa).length < 1) {
+      this.name = pessoa.name
+      this.age = pessoa.age
     }
   }
 }

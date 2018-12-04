@@ -13,12 +13,16 @@ export default {
   },
 
   changeCurrentPessoa (state, currentPessoa) {
-    console.log('currentPessoa (Antes): ' + state.currentPessoa._id)
+    console.log('currentPessoa (Antes): ' + state.currentPessoa)
     state.currentPessoa = currentPessoa
-    console.log('currentPessoa (Depois): ' + state.currentPessoa._id)
+    console.log('currentPessoa (Depois): ' + state.currentPessoa)
   },
 
   changePessoas (state, pessoas) {
     state.pessoas = pessoas
+  },
+
+  changeAlert (state, alert) {
+    state.alerta = alert
   }
 }

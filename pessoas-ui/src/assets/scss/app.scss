@@ -2,3 +2,45 @@
     text-decoration: none;
     color: inherit;
 }
+
+.v-snack__content .v-btn:first-of-type {
+    margin-left: 15px !important;
+}
+
+.icon-alert {
+    margin-right:  15px ;
+}
+
+.v-alert {
+    border: 1px solid transparent !important;
+    border-radius: .25rem !important;
+}
+
+.v-alert-success {
+    color: #155724 !important;
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
+}
+
+.v-alert-warning {
+    color: #721c24 !important;
+    background-color: #f8d7da !important;
+    border-color: #f5c6cb !important;
+}
+
+.v-icon-success {
+    color: #155724!important;
+}
+
+.v-icon-warning {
+    color: #721c24 !important;
+}
+
+/* This is for documentation purposes and will not be needed in your application */
+//#create .v-speed-dial {
+//    position: absolute;
+//}
+//
+//#create .v-btn--floating {
+//    position: relative;
+//}

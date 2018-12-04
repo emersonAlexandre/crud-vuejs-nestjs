@@ -2,5 +2,10 @@ export default {
   confirmationModal: false,
   openModal: false,
   currentPessoa: {},
-  pessoas: []
+  pessoas: [],
+  alerta: {
+    success: false,
+    message: '',
+    open: false
+  }
 }

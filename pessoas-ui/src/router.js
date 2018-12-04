@@ -11,7 +11,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/pessoas',
       name: 'pessoas',
       component: Pessoas
     },
@@ -21,9 +21,21 @@ export default new Router({
       component: About
     },
     {
-      path: '/cadastro',
-      name: 'cadastro',
-      component: FormPessoa
+      path: '/new',
+      name: 'pessoaNew',
+      component: FormPessoa,
+      meta: {
+        title: 'Nova Pessoa'
+      }
+    },
+    {
+      path: '/edit',
+      name: 'pessoaEdit',
+      component: FormPessoa,
+      props: true,
+      meta: {
+        title: 'Editar Pessoa'
+      }
     }
   ]
 })
