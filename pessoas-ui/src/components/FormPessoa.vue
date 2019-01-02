@@ -1,29 +1,52 @@
 <template>
-  <form>
-    <v-text-field
-      v-validate="'required'"
-      v-model="name"
-      :error-messages="errors.collect('name')"
-      label="Name"
-      data-vv-name="name"
-      required
-    ></v-text-field>
-    <date-picker
-            @change="changedDate"
-            v-model="birthday"
-    ></date-picker>
-    <v-text-field
-            v-validate="'required'"
-            v-model="age"
-            :error-messages="errors.collect('age')"
-            label="Age"
-            data-vv-name="age"
-            required
-            type="number"
-    ></v-text-field>
-    <v-btn @click="voltar">Voltar</v-btn>
-    <v-btn @click="submit">Submit</v-btn>
-  </form>
+  <v-form>
+      <v-layout row wrap class="justify-space-between">
+        <v-flex xs12 sm4 md5>
+          <v-text-field
+                  v-validate="'required'"
+                  v-model="name"
+                  :error-messages="errors.collect('name')"
+                  label="Name"
+                  data-vv-name="name"
+                  required
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm4 md3>
+          <v-text-field
+                  v-validate="'required'"
+                  v-model="birthday"
+                  :error-messages="errors.collect('birthday')"
+                  label="Birthday"
+                  data-vv-name="birthday"
+                  required
+                  mask="##/##/####"
+                  append-icon="event"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm3 md3>
+          <v-text-field
+                  v-validate="'required|numeric'"
+                  v-model="age"
+                  :error-messages="errors.collect('age')"
+                  label="Age"
+                  data-vv-name="age"
+                  required
+                  type="number"
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+
+    <!--<date-picker-->
+            <!--@change="changedDate"-->
+            <!--v-validate="'required'"-->
+            <!--:error-messages="errors.collect('birthday')"-->
+            <!--data-vv-name="birthday"-->
+            <!--required-->
+    <!--&gt;</date-picker>-->
+
+    <v-btn @click="voltar" color="grey darken-2" dark class="without-margin-left">Voltar</v-btn>
+    <v-btn @click="submit" color="indigo" dark>Submit</v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -78,7 +101,7 @@ export default {
           this.createOrEditPessoa(this.verifyCreateOrEdit())
             .then(result => {
               this.$router.push({ name: 'pessoas' })
-              this.alterarAlert({ success: false, message: this.message, open: true })
+              this.alterarAlert({ success: true, message: this.message, open: true })
             }, error => {
               console.error(error)
               this.alterarAlert({ success: false, message: this.message + error, open: true })
@@ -106,9 +129,9 @@ export default {
     })
   },
   created () {
-    let pessoa = this.currentPessoa
+    let pessoa = this.currentPessoa;
     if (!Object.keys(pessoa).length < 1) {
-      this.name = pessoa.name
+      this.name = pessoa.name;
       this.age = pessoa.age
     }
   }

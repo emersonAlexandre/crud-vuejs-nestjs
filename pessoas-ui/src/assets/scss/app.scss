@@ -37,10 +37,43 @@
 }
 
 /* This is for documentation purposes and will not be needed in your application */
-//#create .v-speed-dial {
-//    position: absolute;
-//}
-//
-//#create .v-btn--floating {
-//    position: relative;
-//}
+#create .v-speed-dial {
+    position: absolute;
+}
+
+#create .v-btn--floating {
+    position: relative;
+}
+
+.v-speed-dial--right {
+    margin-left: 56px !important;
+    width: 47px !important;
+    text-align: right !important;
+}
+
+.v-btn--floating {
+    height: 40px;
+    width: 40px;
+}
+
+.v-btn--floating.v-btn--small {
+    height: 30px;
+    width: 30px;
+    margin: 6px 4px !important;
+}
+
+.actions {
+    padding: 0 !important;
+}
+
+.v-speed-dial--right {
+    right: 0 !important;
+}
+
+.v-btn--floating.v-btn {
+    margin: 6px 4px !important;
+}
+
+.without-margin-left {
+    margin-left: 0 !important;
+}

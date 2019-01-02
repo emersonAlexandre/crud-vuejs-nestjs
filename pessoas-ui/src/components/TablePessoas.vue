@@ -17,7 +17,7 @@
                     ></v-text-field>
                 </v-flex>
                 <v-flex sm2>
-                    <v-btn style="float: right;" color="primary" dark class="mb-2" @click="goTo({ name: 'pessoaNew' })">
+                    <v-btn style="float: right;" color="green" dark class="mb-2" @click="goTo({ name: 'pessoaNew' })">
                         New People
                     </v-btn>
                 </v-flex>
@@ -32,20 +32,21 @@
                 <td>{{ props.item.name }}</td>
                 <td class="text-xs-left">{{ props.item.age }}</td>
                 <td class="text-xs-left">{{ props.item.birthday }}</td>
-                <td class="text-xs-left">
-                    <v-icon
-                            small
-                            class="mr-2"
-                            @click="editarPessoa(props.item)"
-                    >
-                        edit
-                    </v-icon>
-                    <v-icon
-                            small
-                            @click="abrirModal(props.item)"
-                    >
-                        delete
-                    </v-icon>
+                <td class="text-xs-left actions">
+                    <!--<v-icon-->
+                            <!--small-->
+                            <!--class="mr-2"-->
+                            <!--@click="editarPessoa(props.item)"-->
+                    <!--&gt;-->
+                        <!--edit-->
+                    <!--</v-icon>-->
+                    <!--<v-icon-->
+                            <!--small-->
+                            <!--@click="abrirModal(props.item)"-->
+                    <!--&gt;-->
+                        <!--delete-->
+                    <!--</v-icon>-->
+                    <actions @edit="editarPessoa(props.item)" @delete="abrirModal(props.item)"></actions>
                 </td>
             </template>
             <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -62,9 +63,11 @@
 import ConfirmDialog from './ConfirmDialog'
 import { mapActions, mapGetters } from 'vuex'
 import Alert from './Alert'
+import Actions from './Actions'
 export default {
   name: 'TablePessoas',
   components: {
+    'actions': Actions,
     'alert': Alert,
     'confirm-dialog': ConfirmDialog
   },

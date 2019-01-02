@@ -1,49 +1,45 @@
-<!--<div id="app">-->
-    <!--<v-app id="inspire">-->
-        <!--<v-card id="create">-->
-            <!--<v-speed-dial-->
-                    <!--v-model="fab"-->
-                    <!--:left="left"-->
-                    <!--:direction="direction"-->
-                    <!--:transition="transition"-->
-            <!--&gt;-->
-                <!--<v-btn-->
-                        <!--slot="activator"-->
-                        <!--v-model="fab"-->
-                        <!--color="blue darken-2"-->
-                        <!--dark-->
-                        <!--fab-->
-                <!--&gt;-->
-                    <!--<v-icon>account_circle</v-icon>-->
-                    <!--<v-icon>close</v-icon>-->
-                <!--</v-btn>-->
-                <!--<v-btn-->
-                        <!--fab-->
-                        <!--dark-->
-                        <!--small-->
-                        <!--color="green"-->
-                <!--&gt;-->
-                    <!--<v-icon>edit</v-icon>-->
-                <!--</v-btn>-->
-                <!--<v-btn-->
-                        <!--fab-->
-                        <!--dark-->
-                        <!--small-->
-                        <!--color="red"-->
-                <!--&gt;-->
-                    <!--<v-icon>delete</v-icon>-->
-                <!--</v-btn>-->
-            <!--</v-speed-dial>-->
-        <!--</v-card>-->
-    <!--</v-app>-->
-<!--</div>-->
+<template>
+            <v-speed-dial
+                    v-model="fab"
+                    right
+                    direction="left"
+                    transition="slide-x-reverse-transition"
+            >
+                <v-btn
+                        slot="activator"
+                        v-model="fab"
+                        color="indigo"
+                        dark
+                        fab
+                >
+                    <v-icon>chevron_left</v-icon>
+                    <v-icon>chevron_right</v-icon>
+                </v-btn>
+                <v-btn
+                        fab
+                        dark
+                        small
+                        color="grey darken-2"
+                        @click="$emit('edit')"
+                >
+                    <v-icon>edit</v-icon>
+                </v-btn>
+                <v-btn
+                        fab
+                        dark
+                        small
+                        color="red darken-3"
+                        @click="$emit('delete')"
+                >
+                    <v-icon>delete</v-icon>
+                </v-btn>
+            </v-speed-dial>
+</template>
 
-<!--new Vue({-->
-<!--el: '#app',-->
-<!--data: () => ({-->
-<!--direction: 'right',-->
-<!--fab: false,-->
-<!--left: true,-->
-<!--transition: 'slide-x-reverse-transition'-->
-<!--}),-->
-<!--})-->
+<script>
+export default {
+  data: () => ({
+    fab: false
+  })
+}
+</script>

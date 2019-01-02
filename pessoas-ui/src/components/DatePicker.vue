@@ -12,12 +12,14 @@
     >
         <v-text-field
                 slot="activator"
-                :value="birthday"
+                v-model="birthday"
                 label="Birthday"
                 hint="DD/MM/YYYY format"
                 persistent-hint
                 prepend-icon="event"
                 @blur="date = parseDate(birthday)"
+                @input="$emit('input', $event.target.value)"
+                :name="name"
         ></v-text-field>
         <v-date-picker
                 ref="picker"
@@ -32,14 +34,44 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapGetters } from 'vuex'
+import VeeValidate from 'vee-validate'
+
+Vue.use(VeeValidate)
 
 export default {
+  name: 'date-picker',
+  $_veeValidate: {
+    value () {
+      return this.$el.value
+    },
+    name () {
+      return this.name
+    }
+  },
+  props: {
+    name: String,
+    value: {
+      type: null,
+      default: null
+    }
+  },
   data: () => ({
     date: null,
     menu: false,
-    birthday: null
+    birthday: null,
+    dictionary: {
+      custom: {
+        birthday: {
+          required: () => 'Birthday can not be empty'
+        }
+      }
+    }
   }),
+  mounted () {
+    this.$el.value = this.value
+  },
   watch: {
     menu (val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
